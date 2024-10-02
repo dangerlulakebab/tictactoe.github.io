@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>tictac</title>
+</head>
+<body>
+    <div class="btns">
+        <button class="restart">Restart</button>
+    </div>
+
+    <div class="gameboard">
+        <div class="pole item"></div>
+        <div class="pole item"></div>
+        <div class="pole item"></div>
+        <div class="pole item"></div>
+        <div class="pole item"></div>
+        <div class="pole item"></div>
+        <div class="pole item"></div>
+        <div class="pole item"></div>
+        <div class="pole item"></div>
+    </div>
+
+    <div class="score">
+        <label for="">Tic =</label>
+        <div class="scoreX"></div>
+        <label for="">Toe =</label>
+        <div class="score0"></div>
+    </div>
+
+    <script>
+
+    const poles = document.querySelectorAll('.pole')
+    const restart = document.querySelector('.restart')
+    const tic = document.querySelector('.scoreX')
+    const toe = document.querySelector('.score0')
+    
+    tic.textContent = 0
+    toe.textContent = 0
+    let turn = 0;
+
+    const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];   
+
+    function checkWinner () {
+        for (const combinations of winningCombinations) {
+            const [a, b, c] = combinations
+            if (
+                poles[a].textContent &&
+                poles[a].textContent === poles[b].textContent &&
+                poles[a].textContent === poles[c].textContent
+            )
+            
+            {
+                let side = (turn % 2 === 0) ? tic : toe;
+                side.textContent = parseInt(side.textContent) + 1;
+                alert(`${side === tic ? 'tic' : 'toe'} Wins!`)
+                return true
+
+
+            }
+
+        }
+      return false
+    }
+
+    restart.addEventListener('click', () => {
+        poles.forEach((pole => {
+            pole.textContent = ''
+        }))
+        turn = 0;
+    })
+
+    poles.forEach((pole => {
+        pole.addEventListener('click', () => {
+            if (pole.textContent === ''){
+                let letter = (turn % 2 === 0) ? 'X' : '0';
+                pole.textContent = letter
+                if (!checkWinner()){
+                    turn++
+                }else {
+                    poles.forEach((pole => {
+                    pole.textContent = ''
+                    }))
+                }
+            }
+        })
+    }))
+
+
+
+    </script>
+</body>
+</html>
